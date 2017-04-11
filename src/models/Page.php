@@ -79,4 +79,9 @@ class Page extends Eloquent {
     {
         return $query->where('published', '=', 1);
     }
+
+    public function getTemplateAttribute()
+    {
+        return $this->type->template;
+    }
 }

@@ -7,9 +7,9 @@
  */
 
 namespace MonkiiBuilt\LaravelPages;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-
-class ServiceProvider {
+class ServiceProvider extends BaseServiceProvider {
 
     protected $defer = false;
 
@@ -22,10 +22,6 @@ class ServiceProvider {
     {
 
         $this->loadMigrationsFrom(__DIR__.'/../resources/database/migrations');
-
-//        $this->loadRoutesFrom(__DIR__.'/routes.php');
-//
-//        $this->loadViewsFrom(__DIR__.'/../resources/views', 'url-alias');
 
     }
 }

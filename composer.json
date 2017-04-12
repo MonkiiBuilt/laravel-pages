@@ -1,0 +1,14 @@
+{
+  "name": "laravel-pages",
+  "version": "0.0.2",
+  "require": {
+    "php": ">=5.5.9",
+    "laravel/framework": "5.4.*",
+    "MonkiiBuilt/laravel-url-alias": "0.0.5"
+  },
+  "autoload": {
+    "psr-0" : {
+      "MonkiiBuilt\\LaravelPages" : "src"
+    }
+  }
+}

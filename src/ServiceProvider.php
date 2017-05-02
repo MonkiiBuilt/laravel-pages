@@ -18,8 +18,11 @@ class ServiceProvider extends BaseServiceProvider {
      *
      * @return void
      */
-    public function boot()
+    public function boot(\MonkiiBuilt\LaravelAdministrator\PackageRegistry $packageRegistry)
     {
+        $packageRegistry->registerPackage('MonkiiBuilt\LaravelPages');
+
+        $packageRegistry->registerConfig(config_path('laravel-administrator/laravel-administrator-pages.php'));
 
         $this->loadMigrationsFrom(__DIR__.'/../resources/database/migrations');
 
@@ -27,5 +30,8 @@ class ServiceProvider extends BaseServiceProvider {
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'pages');
 
+        $this->publishes([
+            __DIR__. '/../config/laravel-administrator-pages.php' => config_path('/laravel-administrator/laravel-administrator-pages.php')
+        ], 'administrator-pages-config');
     }
 }

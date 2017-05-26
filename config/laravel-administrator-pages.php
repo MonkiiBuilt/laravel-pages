@@ -11,6 +11,10 @@ return [
             'laravel-administrator-pages' => [
                 'label' => 'Pages',
                 'classes' => [],
+                'children' => [
+                    'laravel-administrator-pages-create',
+                    'laravel-administrator-pages-edit',
+                ]
             ]
         ],
     ]

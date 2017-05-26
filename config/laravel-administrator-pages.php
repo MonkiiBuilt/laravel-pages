@@ -5,11 +5,13 @@
  * @time 10:53 AM
  * @copyright 2008 - present, Monkii Digital Agency (http://monkii.com.au)
  */
-
 return [
     'menu' => [
         'main' => [
-            'laravel-administrator-pages' => 'Pages',
-        ]
+            'laravel-administrator-pages' => [
+                'label' => 'Pages',
+                'classes' => [],
+            ]
+        ],
     ]
 ];

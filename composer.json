@@ -4,7 +4,8 @@
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.4.*",
-    "MonkiiBuilt/laravel-url-alias": "0.0.5"
+    "MonkiiBuilt/laravel-url-alias": "0.0.5",
+    "nanigans/single-table-inheritance": "0.7.*"
   },
   "autoload": {
     "psr-0" : {

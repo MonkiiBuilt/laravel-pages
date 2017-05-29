@@ -10,9 +10,17 @@ namespace MonkiiBuilt\LaravelPages\Models;
 
 use Eloquent;
 
+use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
+
 class PageSection extends Eloquent {
 
+    use SingleTableInheritanceTrait;
+
     protected $table = 'page_sections';
+
+    protected static $singleTableTypeField = 'type';
+
+    protected static $singleTableSubclasses = [];
 
     protected $fillable = [
         'type',
@@ -35,10 +43,12 @@ class PageSection extends Eloquent {
 
     public function getDataAttribute($value)
     {
-        if (false === ($value = unserialize($value))) {
-            $value = [];
-        }
+        $value = unserialize($value);
         return $value;
     }
 
+    public static function addDynamicSubclass($className)
+    {
+        self::$singleTableSubclasses[] = $className;
+    }
 }

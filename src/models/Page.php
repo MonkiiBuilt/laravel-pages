@@ -11,12 +11,15 @@ namespace MonkiiBuilt\LaravelPages\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use MonkiiBuilt\LaravelUrlAlias\Traits\UrlAlias;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Page extends Eloquent {
 
     use SoftDeletes;
 
     use UrlAlias;
+
+    use Sluggable;
 
     protected $table = 'pages';
 
@@ -27,17 +30,31 @@ class Page extends Eloquent {
         'title',
         'slug',
         'published',
+        'page_type',
         'created_by',
         'updated_by',
         'created_at',
         'updated_at',
-        'page_types_id'
     ];
 
     /**
      * @var array
      */
     protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     /**
      * @return mixed
@@ -65,9 +82,9 @@ class Page extends Eloquent {
         return $this->hasMany('MonkiiBuilt\LaravelPages\Models\PageMetaTag', 'pages_id');
     }
 
-    public function type()
+    public function getPageTypeConfigAttribute()
     {
-        return $this->belongsTo('MonkiiBuilt\LaravelPages\Models\PageType', 'page_types_id');
+        return config('laravel-administrator.pageTypes.' . $this->page_type);
     }
 
     public function getUrlAttribute()

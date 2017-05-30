@@ -16,6 +16,21 @@ return [
                     'laravel-administrator-pages-edit',
                 ]
             ]
+        ]
+    ],
+
+    /**
+     * Define your page types here.
+     *
+     */
+    'pageTypes' => [
+        'standard_page' => [
+            'name' => 'standard_page',
+            'label' => 'Standard page',
+            'template' => 'pages.standard_page',
+            'sections' => [
+                'plain_text',
+            ]
         ],
     ]
 ];

@@ -22,8 +22,6 @@ class ServiceProvider extends BaseServiceProvider {
     {
         $packageRegistry->registerPackage('MonkiiBuilt\LaravelPages');
 
-        $packageRegistry->registerConfig(config_path('laravel-administrator/laravel-administrator-pages.php'));
-
         $this->loadMigrationsFrom(__DIR__.'/../resources/database/migrations');
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');

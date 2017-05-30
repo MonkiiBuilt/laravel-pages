@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 
 class PagesAdminController extends Controller
 {
-
     public function index(Request $request)
     {
 
@@ -24,8 +23,15 @@ class PagesAdminController extends Controller
 
     public function create(Request $request)
     {
+        $typesConfig= config('laravel-administrator.pageTypes');
 
-        return view('pages::admin.create');
+        $types = [];
+
+        foreach ($typesConfig as $type) {
+            $types[$type['name']] = $type['label'];
+        }
+
+        return view('pages::admin.create', ['types' => $types]);
     }
 
     public function edit(Request $request, $id)
@@ -38,7 +44,16 @@ class PagesAdminController extends Controller
     public function store(Request $request)
     {
 
-        return \Redirect('laravel-administrator-pages');
+        $data = [
+            'title' => $request->input('title'),
+            'page_type' => $request->input('page_type'),
+            'created_by' => \Auth::user()->id,
+            'updated_by' => \Auth::user()->id,
+        ];
+
+        $page = Page::create($data);
+
+        return \Redirect::route('laravel-administrator-pages-edit', ['id' => $page->id]);
     }
 
     public function update(Request $request, $id)

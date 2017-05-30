@@ -22,6 +22,8 @@ class PageSection extends Eloquent {
 
     protected static $singleTableSubclasses = [];
 
+    protected static $singleTableType;
+
     protected $fillable = [
         'type',
         'data',
@@ -47,8 +49,18 @@ class PageSection extends Eloquent {
         return $value;
     }
 
-    public static function addDynamicSubclass($className)
+    public static function addSingleTableSubclass($className)
     {
         self::$singleTableSubclasses[] = $className;
+    }
+
+    public static function getSingleTableSubclasses()
+    {
+        return self::$singleTableSubclasses;
+    }
+
+    public static function getSingleTableType()
+    {
+        return static::$singleTableType;
     }
 }

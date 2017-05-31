@@ -27,6 +27,8 @@ class PageSection extends Eloquent {
     protected $fillable = [
         'type',
         'data',
+        'form_element_name',
+        'form_element_label',
         'delta',
         'pages_id',
         'created_at',
@@ -63,4 +65,6 @@ class PageSection extends Eloquent {
     {
         return static::$singleTableType;
     }
+
+    public function getDecorator(){}
 }

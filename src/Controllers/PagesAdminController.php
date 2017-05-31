@@ -53,6 +53,23 @@ class PagesAdminController extends Controller
 
         $page = Page::create($data);
 
+        // Create the content sections for the chosen page type
+        $typesConfig= config('laravel-administrator.pageTypes');
+
+        $sections = $typesConfig[$data['page_type']]['sections'];
+
+        foreach ($sections as $delta => $sectionConfig) {
+            $section = new $sectionConfig['class'](
+                [
+                    'delta' => $delta,
+                    'form_element_name'  => $sectionConfig['form_element_name'],
+                    'form_element_label' => $sectionConfig['form_element_label'],
+                    'type' => $sectionConfig['type'],
+                ]
+            );
+            $page->sections()->save($section);
+        }
+
         return \Redirect::route('laravel-administrator-pages-edit', ['id' => $page->id]);
     }
 
@@ -60,13 +77,25 @@ class PagesAdminController extends Controller
     {
         $page = Page::findOrFail($id);
 
-        return \Redirect('laravel-administrator-pages');
+        $data = $request->input();
+
+        $page->update([
+            'title' => $data['title']
+        ]);
+
+        foreach ($page->sections as $section) {
+            $section->update([
+                'data' => $data['sections'][$section->id],
+            ]);
+        }
+
+        return \Redirect::route('laravel-administrator-pages');
     }
 
     public function destroy(Request $request, $id)
     {
         $page = Page::findOrFail($id);
 
-        return \Redirect('laravel-administrator-pages');
+        return \Redirect::route('laravel-administrator-pages');
     }
 }

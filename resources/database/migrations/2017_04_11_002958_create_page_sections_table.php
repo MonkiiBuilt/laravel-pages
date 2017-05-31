@@ -15,12 +15,11 @@ class CreatePageSectionsTable extends Migration
     {
         Schema::create('page_sections', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-
             $table->string('type');
             $table->smallInteger('delta');
-            $table->binary('data');
+            $table->binary('data')->nullable();
             $table->Integer('pages_id')->unsigned();
+            $table->timestamps();
 
             $table->foreign('pages_id')->references('id')->on('pages');
         });

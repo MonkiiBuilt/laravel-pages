@@ -29,7 +29,12 @@ return [
             'label' => 'Standard page',
             'template' => 'pages.standard_page',
             'sections' => [
-                'plain_text',
+                [
+                    'class' => 'MonkiiBuilt\LaravelPageSectionsText\Models\PageSectionText',
+                    'type' => 'plain_text',
+                    'form_element_label' => 'Body',
+                    'form_element_name' => 'body',
+                ]
             ]
         ],
     ]

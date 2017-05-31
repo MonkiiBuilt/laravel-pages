@@ -16,6 +16,8 @@ class CreatePageSectionsTable extends Migration
         Schema::create('page_sections', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
+            $table->string('form_element_name');
+            $table->string('form_element_label');
             $table->smallInteger('delta');
             $table->binary('data')->nullable();
             $table->Integer('pages_id')->unsigned();

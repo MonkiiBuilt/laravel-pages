@@ -25,15 +25,15 @@ return [
      */
     'pageTypes' => [
         'standard_page' => [
-            'name' => 'standard_page',
+            'machine_name' => 'standard_page',
             'label' => 'Standard page',
             'template' => 'pages.standard_page',
             'sections' => [
                 [
                     'class' => 'MonkiiBuilt\LaravelPageSectionsText\Models\PageSectionText',
                     'type' => 'plain_text',
-                    'form_element_label' => 'Body',
-                    'form_element_name' => 'body',
+                    'label' => 'Body',
+                    'machine_name' => 'body',
                 ]
             ]
         ],

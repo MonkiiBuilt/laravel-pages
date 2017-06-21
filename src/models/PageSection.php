@@ -27,8 +27,10 @@ class PageSection extends Eloquent {
     protected $fillable = [
         'type',
         'data',
-        'form_element_name',
-        'form_element_label',
+        'machine_name',
+        'label',
+        'rules',
+        'messages',
         'delta',
         'pages_id',
         'created_at',
@@ -40,16 +42,11 @@ class PageSection extends Eloquent {
         return $this->belongsTo('MonkiiBuilt\LaravelPages\Models\Page', 'pages_id');
     }
 
-    public function setDataAttribute($value)
-    {
-        $this->attributes['data'] = serialize($value);
-    }
-
-    public function getDataAttribute($value)
-    {
-        $value = unserialize($value);
-        return $value;
-    }
+    protected $casts = [
+        'data' => 'array',
+        'rules' => 'array',
+        'messages' => 'array',
+    ];
 
     public static function addSingleTableSubclass($className)
     {

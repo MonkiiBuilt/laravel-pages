@@ -13,14 +13,27 @@ use App\Http\Controllers\Controller;
 use MonkiiBuilt\LaravelPages\Models\Page;
 use Illuminate\Http\Request;
 
+/**
+ * Class PagesAdminController
+ * @package MonkiiBuilt\LaravelPages\Controllers
+ */
 class PagesAdminController extends Controller
 {
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
+        $pages = Page::all();
 
-        return view('pages::admin.index');
+        return view('pages::admin.index', ['pages' => $pages]);
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(Request $request)
     {
         $typesConfig= config('laravel-administrator.pageTypes');
@@ -28,12 +41,17 @@ class PagesAdminController extends Controller
         $types = [];
 
         foreach ($typesConfig as $type) {
-            $types[$type['name']] = $type['label'];
+            $types[$type['machine_name']] = $type['label'];
         }
 
         return view('pages::admin.create', ['types' => $types]);
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit(Request $request, $id)
     {
         $page = Page::findOrFail($id);
@@ -41,12 +59,21 @@ class PagesAdminController extends Controller
         return view('pages::admin.edit', ['page' => $page]);
     }
 
+    /**
+     * Save the most basic essential info of a page.
+     * Make sure it's not published as at this stage there is no content
+     * in any of it's required sections.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
 
         $data = [
             'title' => $request->input('title'),
             'page_type' => $request->input('page_type'),
+            'published' => 0,
             'created_by' => \Auth::user()->id,
             'updated_by' => \Auth::user()->id,
         ];
@@ -59,12 +86,17 @@ class PagesAdminController extends Controller
         $sections = $typesConfig[$data['page_type']]['sections'];
 
         foreach ($sections as $delta => $sectionConfig) {
+
+            // merge default validation rules with any custom ones defined in config
+
             $section = new $sectionConfig['class'](
                 [
                     'delta' => $delta,
-                    'form_element_name'  => $sectionConfig['form_element_name'],
-                    'form_element_label' => $sectionConfig['form_element_label'],
+                    'machine_name'  => $sectionConfig['machine_name'],
+                    'label' => $sectionConfig['label'],
                     'type' => $sectionConfig['type'],
+                    'rules' => isset($sectionConfig['rules']) ? $sectionConfig['rules'] : null,
+                    'messages' => isset($sectionConfig['messages']) ? $sectionConfig['messages'] : null,
                 ]
             );
             $page->sections()->save($section);
@@ -73,28 +105,76 @@ class PagesAdminController extends Controller
         return \Redirect::route('laravel-administrator-pages-edit', ['id' => $page->id]);
     }
 
+    /**
+     * Update a page including any sections.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param $id
+     * @return mixed
+     */
     public function update(Request $request, $id)
     {
         $page = Page::findOrFail($id);
 
         $data = $request->input();
 
-        $page->update([
-            'title' => $data['title']
-        ]);
+        $rules = [];
+
+        $messages = [];
 
         foreach ($page->sections as $section) {
+
+            /**
+             * Collect any validation rules page sections may have
+             * defined in their models.
+             */
+            if (is_array($section->rules)) {
+                foreach ($section->rules as $name => $rule) {
+                    $rules['sections.' . $section->id . '.data.' . $name] = $rule;
+                }
+            }
+
+            /**
+             * Collect any validation custom messages page sections
+             * may have defined in their models.
+             */
+            if (is_array($section->messages)) {
+                foreach ($section->messages as $name => $message) {
+                    $messages['sections.' . $section->id . '.data.' . $name] = $message;
+                }
+            }
+
+        }
+
+        // Make the validator
+        $validator = \Validator::make($request->all(), $rules, $messages);
+
+        // Validate the data
+        $validator->validate($request, $rules);
+
+        // Update the page itself
+        $page->update($data);
+
+        // save each section
+        foreach ($page->sections as $section) {
             $section->update([
-                'data' => $data['sections'][$section->id],
+                'data' => $data['sections'][$section->id]['data'],
             ]);
         }
 
         return \Redirect::route('laravel-administrator-pages');
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param $id
+     * @return mixed
+     */
     public function destroy(Request $request, $id)
     {
         $page = Page::findOrFail($id);
+
+        $page->delete();
 
         return \Redirect::route('laravel-administrator-pages');
     }

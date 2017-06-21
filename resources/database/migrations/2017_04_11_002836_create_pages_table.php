@@ -21,7 +21,8 @@ class CreatePagesTable extends Migration
             $table->string('slug', 255);
             $table->string('page_type', 255);
             $table->boolean('published')->default(0);
-
+            $table->smallInteger('promoted')->default(0);
+            $table->smallInteger('delta')->default(0);
             $table->integer('created_by')->unsigned();
             $table->integer('updated_by')->unsigned();
 

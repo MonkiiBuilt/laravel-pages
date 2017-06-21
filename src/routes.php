@@ -20,4 +20,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'MonkiiBuilt\LaravelPages', 'm
 
     Route::delete('/pages/{id}', ['as' => 'laravel-administrator-pages-delete', 'uses' => 'Controllers\PagesAdminController@destroy']);
 
+    Route::get('/pages/{pageId}/meta', ['as' => 'laravel-administrator-pages-meta', 'uses' => 'Controllers\MetaTagsController@create']);
+
+    Route::post('/pages/{pageId}/meta-store', ['as' => 'laravel-administrator-pages-meta-store', 'uses' => 'Controllers\MetaTagsController@store']);
+
+    Route::put('/pages/{pageId}/meta-update', ['as' => 'laravel-administrator-pages-meta-update', 'uses' => 'Controllers\MetaTagsController@update']);
+
+    Route::get('/pages/{id}/meta-edit', ['as' => 'laravel-administrator-pages-meta-edit', 'uses' => 'Controllers\MetaTagsController@edit']);
+
+    Route::delete('/pages/{id}/meta-delete', ['as' => 'laravel-administrator-pages-meta-delete', 'uses' => 'Controllers\MetaTagsController@delete']);
+
 });

@@ -41,6 +41,32 @@
         {!! $section->getDecorator()->renderForm() !!}
     @endforeach
 
+    <div class="panel__row">
+        <div class="panel__full">
+            <fieldset class="{{ $errors->has('published') ? 'error' : '' }}">
+                {!! Form::hidden('published', 0) !!}
+                <label class="form__label-check">
+                    {!! Form::checkbox('published', 1, $page->published, array('class' => 'form-checkbox')) !!}
+                    <span class="checkbox"></span>Published
+                </label>
+                <div class="form__error">{{ $errors->first('published') }}</div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="panel__row">
+        <div class="panel__full">
+            <fieldset class="{{ $errors->has('promoted') ? 'error' : '' }}">
+                {!! Form::hidden('promoted', 0) !!}
+                <label class="form__label-check">
+                    {!! Form::checkbox('promoted', 1, $page->promoted, array('class' => 'form-checkbox')) !!}
+                    <span class="checkbox"></span>Promote to home page
+                </label>
+                <div class="form__error">{{ $errors->first('promoted') }}</div>
+            </fieldset>
+        </div>
+    </div>
+
     {!! Form::submit('Save', ['name' => 'submit']) !!}
 
     {!! Form::close() !!}

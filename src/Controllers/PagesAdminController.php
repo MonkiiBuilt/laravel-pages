@@ -191,6 +191,6 @@ class PagesAdminController extends Controller
 
         $section->delete();
 
-        return response([1]);
+        return response()->json([1]);
     }
 }

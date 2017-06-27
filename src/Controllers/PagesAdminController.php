@@ -87,6 +87,11 @@ class PagesAdminController extends Controller
 
         foreach ($sections as $delta => $sectionConfig) {
 
+            // Check for existence of page section class (package may have not been added)
+            if(!class_exists($sectionConfig['class'])) {
+              continue;
+            }
+
             // merge default validation rules with any custom ones defined in config
 
             $section = new $sectionConfig['class'](

@@ -12,6 +12,7 @@ namespace MonkiiBuilt\LaravelPages\Controllers;
 use App\Http\Controllers\Controller;
 use MonkiiBuilt\LaravelPages\Models\Page;
 use Illuminate\Http\Request;
+use MonkiiBuilt\LaravelPages\Models\PageSection;
 
 /**
  * Class PagesAdminController
@@ -182,5 +183,14 @@ class PagesAdminController extends Controller
         $page->delete();
 
         return \Redirect::route('laravel-administrator-pages');
+    }
+
+    public function pageSectionDelete(Request $request)
+    {
+        $section = PageSection::findOrFail($request->input('id'));
+
+        $section->delete();
+
+        return response([1]);
     }
 }

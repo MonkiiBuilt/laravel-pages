@@ -38,7 +38,10 @@
 
     {!! Form::hidden('page_type', $page->page_type) !!}
     @foreach($page->sections as $section)
-        {!! $section->getDecorator()->renderForm() !!}
+        <div class="page-section">
+            <div class="page-section-delete" data-id="{{ $section->id }}">Delete</div>
+            {!! $section->getDecorator()->renderForm() !!}
+        </div>
     @endforeach
 
     <div class="panel__row">
@@ -70,5 +73,36 @@
     {!! Form::submit('Save', ['name' => 'submit']) !!}
 
     {!! Form::close() !!}
+
+@endsection
+
+@section('scripts')
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.page-section-delete').click(function(e) {
+
+                var data = {
+                    "id": this.dataset.id,
+                    "_method": "DELETE",
+                    "_token": $("input[name=_token]").val()
+                };
+
+                var url = "{{ route('laravel-administrator-page-sections-delete') }}";
+
+                var context = $(this).parent();
+
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    data: data,
+                    context: context,
+                    success: function(data, status) {
+                        $(this).remove();
+                    }
+                });
+            });
+        });
+    </script>
 
 @endsection

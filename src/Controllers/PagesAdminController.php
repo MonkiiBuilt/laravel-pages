@@ -103,6 +103,7 @@ class PagesAdminController extends Controller
                     'type' => $sectionConfig['type'],
                     'rules' => isset($sectionConfig['rules']) ? $sectionConfig['rules'] : null,
                     'messages' => isset($sectionConfig['messages']) ? $sectionConfig['messages'] : null,
+                    'data' => isset($sectionConfig['data']) ? $sectionConfig['data'] : null,
                 ]
             );
             $page->sections()->save($section);

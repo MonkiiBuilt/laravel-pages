@@ -7,7 +7,7 @@
  */
 ?>
 
-@extends('vendor/laravel-administrator.layout')
+@extends('laravel-administrator.layout')
 
 @section('title', 'Meta tags')
 

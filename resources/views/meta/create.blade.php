@@ -6,7 +6,7 @@
  * @copyright 2008 - present, Monkii Digital Agency (http://monkii.com.au)
  */
 ?>
-@extends('vendor/laravel-administrator.layout')
+@extends('laravel-administrator.layout')
 
 @section('title', 'Meta tags')
 

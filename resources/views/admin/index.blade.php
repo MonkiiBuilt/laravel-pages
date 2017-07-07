@@ -6,88 +6,71 @@
  * @copyright 2008 - present, Monkii Digital Agency (http://monkii.com.au)
  */
 ?>
-@extends('vendor/laravel-administrator.layout')
+@extends('vendor.laravel-administrator.layout')
 
 @section('title', 'Pages')
 
 @section('content')
 
     <h1>Manage pages</h1>
-    <div class="panel  panel__half">
-        <div class="panel__inner">
 
-            <div class="panel__row">
-                <div class="panel__full  create  solo-button">
-                    <a href="{{ route('laravel-administrator-pages-create') }}" class="btn  btn--primary">
-                        <span class="plus-span">
-                            <svg class="icon icon-plus-circle"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-plus-circle"></use></svg>
-                        </span>
-                        Create new page
-                    </a>
+    <p>
+        <a href="{{ route('laravel-administrator-pages-create') }}" class="btn  btn-primary">
+            <svg class="icon icon-plus-circle"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-plus-circle"></use></svg>
+            Create new page
+        </a>
+    </p>
 
-                </div>
-            </div>
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Slug</th>
+            <th>&nbsp;</th>
+        </tr>
+        <tbody>
+            @foreach($pages as $page)
+                <tr data-id="{{ $page->id }}">
+                    <td>{{ $page->title }}</td>
+                    <td>{{ $page->page_type }}</td>
+                    <td>{{ $page->slug }}</td>
+                    <td>
+                        <a href="{{ route('laravel-administrator-pages-edit', ['id' => $page->id]) }}" class="icon-btn" title="Edit page">
+                            <svg class="icon icon-pencil"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+                        </a>
 
-        </div>
-    </div>
+                        <a href="{{ route('laravel-administrator-pages-meta', ['pageId' => $page->id]) }}" class="icon-btn" title="Edit meta tags">
+                            <svg class="icon icon-tags"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-tags"></use></svg>
+                        </a>
 
-    <div class="panel">
-        <div class="panel__inner">
+                        <a href="#delete-page-{{ $page->id }}" class="icon-btn" data-toggle="modal" title="Delete page">
+                            <svg class="icon icon-bin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
+                        </a>
 
-            <div class="panel__row">
-                <div class="panel__full">
-                    <h3>Pages</h3>
-                </div>
-            </div>
-
-            <div class="panel__row">
-                <div class="panel__full">
-                    <table class="table table-striped table-hover">
-                        <tr>
-                            <th class="col-1">&nbsp;</th>
-                            <th class="col-2">Title</th>
-                            <th class="col-3">Type</th>
-                            <th class="col-4">Slug</th>
-                            <th class="col-5">&nbsp;</th>
-                            <th class="col-6">&nbsp;</th>
-                        </tr>
-                        <tbody class=" sortable">
-                        @foreach($pages as $page)
-                            <tr data-id="{{ $page->id }}">
-                                <td class="col-1">
-                                    <svg class="icon icon-arrows-v"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrows-v"></use></svg>
-                                </td>
-                                <td class="col-2">{{ $page->title }}</td>
-                                <td class="col-3">{{ $page->page_type }}</td>
-                                <td class="col-4">{{ $page->slug }}</td>
-                                <td class="col-5">
-                                    <a href="{{ route('laravel-administrator-pages-edit', ['id' => $page->id]) }}">Edit</a>
-                                    {!! Form::open(['route' => ['laravel-administrator-pages-delete', $page->id],'class' => 'plain confirm']) !!}
-                                    {!! Form::hidden('_method', 'DELETE') !!}
-                                    <button type="submit">Delete</button>
-                                    {!! Form::close() !!}
-                                </td>
-                                <td class="col-5">
-                                    <a href="{{ route('laravel-administrator-pages-meta', ['pageId' => $page->id]) }}">Meta tags</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <!-- This contains the content for Colorbox modal inline calls -->
-    <div class='colorbox-inline'>
-        <div id='confirm_content'>
-            <h3>Are you sure you want to remove this page?</h3>
-            <a class="btn  btn--primary  confirm_link">Yes</a>
-            <a class="btn  btn--tertiary  confirm_link">No</a>
-        </div>
-    </div>
+                        <div class="modal fade" id="delete-page-{{ $page->id }}" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Delete page</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete the page <strong>'{{ $page->title }}'</strong>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        {!! Form::open(['route' => ['laravel-administrator-pages-delete', $page->id],'class' => 'inline confirm']) !!}
+                                            {!! Form::hidden('_method', 'DELETE') !!}
+                                            <button type="submit" class="btn  btn-primary">Delete</button>
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 @endsection

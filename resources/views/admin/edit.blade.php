@@ -55,7 +55,7 @@
             </fieldset>
 
 
-            <!-- Promote to home page -->
+            <!-- Promote this page -->
             <fieldset class="{{ $errors->has('promoted') ? 'error' : '' }}">
                 <div class="checkbox">
                     <label>
@@ -65,6 +65,17 @@
                 </div>
 
                 <div class="form__error">{{ $errors->first('promoted') }}</div>
+            </fieldset>
+
+            <fieldset class="{{ $errors->has('promoted_delta') ? 'error' : '' }}">
+                <div class="checkbox">
+                    <label>
+                        {!! Form::select('promoted_delta', [0,1,2], $page->promoted_delta, array('class' => 'form-select')) !!}
+                        Order of promoted page
+                    </label>
+                </div>
+
+                <div class="form__error">{{ $errors->first('promoted_delta') }}</div>
             </fieldset>
 
 

@@ -32,6 +32,7 @@ class Page extends Eloquent {
         'published',
         'page_type',
         'promoted',
+        'promoted_delta',
         'delta',
         'created_by',
         'updated_by',

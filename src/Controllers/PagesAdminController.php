@@ -163,8 +163,9 @@ class PagesAdminController extends Controller
         $page->update($data);
 
         // save each section
-        foreach ($page->sections as $section) {
+        foreach ($page->sections as $delta => $section) {
             $section->update([
+                'delta' => $delta,
                 'data' => $data['sections'][$section->id]['data'],
             ]);
         }

@@ -25,7 +25,6 @@
         <tr>
             <th>Title</th>
             <th>Type</th>
-            <th>Slug</th>
             <th>&nbsp;</th>
         </tr>
         <tbody>
@@ -33,7 +32,6 @@
                 <tr data-id="{{ $page->id }}">
                     <td>{{ $page->title }}</td>
                     <td>{{ $page->page_type }}</td>
-                    <td>{{ $page->slug }}</td>
                     <td>
                         <a href="{{ route('laravel-administrator-pages-edit', ['id' => $page->id]) }}" class="icon-btn" title="Edit page">
                             <svg class="icon icon-pencil"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>

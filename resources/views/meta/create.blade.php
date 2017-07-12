@@ -14,6 +14,8 @@
 
     <h1>Create meta tag for page <em>{{ $page->title }}</em></h1>
 
+    {!! $tabs !!}
+
     {!! Form::open(['route' => ['laravel-administrator-pages-meta-store', $page->id]]) !!}
 
     <div class="panel  panel__full">

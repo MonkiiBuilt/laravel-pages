@@ -22,6 +22,10 @@ class ServiceProvider extends BaseServiceProvider {
     {
         $packageRegistry->registerPackage('MonkiiBuilt\LaravelPages');
 
+        $packageRegistry->registerTab('Edit', '/admin/pages/{id}/edit', 'editPage', 'first');
+        $packageRegistry->registerTab('View', '/pages/{id}', 'editPage', 'first');
+        $packageRegistry->registerTab('Meta', '/admin/pages/{id}/meta', 'editPage');
+
         $this->loadMigrationsFrom(__DIR__.'/../resources/database/migrations');
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');

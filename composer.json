@@ -5,8 +5,7 @@
     "php": ">=5.5.9",
     "laravel/framework": "5.4.*",
     "MonkiiBuilt/laravel-url-alias": "0.0.5",
-    "nanigans/single-table-inheritance": "0.7.*",
-    "cviebrock/eloquent-sluggable": "^4.2.1"
+    "nanigans/single-table-inheritance": "0.7.*"
   },
   "autoload": {
     "psr-4" : {

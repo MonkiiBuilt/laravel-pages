@@ -10,9 +10,11 @@ namespace MonkiiBuilt\LaravelPages\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use MonkiiBuilt\LaravelPages\Models\Page;
 use Illuminate\Http\Request;
 use MonkiiBuilt\LaravelPages\Models\PageSection;
+use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
 
 /**
  * Class PagesAdminController
@@ -20,6 +22,13 @@ use MonkiiBuilt\LaravelPages\Models\PageSection;
  */
 class PagesAdminController extends Controller
 {
+    private $packageRegistry;
+
+    public function __construct(PackageRegistry $packageRegistry)
+    {
+        $this->packageRegistry = $packageRegistry;
+    }
+
     /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -56,8 +65,12 @@ class PagesAdminController extends Controller
     public function edit(Request $request, $id)
     {
         $page = Page::findOrFail($id);
+        $tabs = $this->packageRegistry->getTabs('editPage', $id);
 
-        return view('pages::admin.edit', ['page' => $page]);
+        return view('pages::admin.edit', [
+            'page' => $page,
+            'tabs' => $tabs,
+        ]);
     }
 
     /**
@@ -194,5 +207,24 @@ class PagesAdminController extends Controller
         $section->delete();
 
         return response()->json([1]);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function view($id) {
+        $page = Page::findOrFail($id);
+        $created_by = User::findOrFail($page->created_by);
+        $updated_by = User::findOrFail($page->updated_by);
+
+        return view('pages::page.view',
+            [
+                'page'       => $page,
+                'created_by' => $created_by,
+                'updated_by'  => $updated_by,
+            ]
+        );
     }
 }

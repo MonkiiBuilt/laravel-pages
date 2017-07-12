@@ -39,4 +39,3 @@ Basic page system for Laravel 5.4.*
 
 5. Run ```php artisan migrate```
 
-6. Make sure you've followed all the installation instructions for [eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable)

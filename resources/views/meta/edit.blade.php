@@ -15,6 +15,8 @@
 
     <h1>Edit meta tag <em>{{ $meta->name }}</em> for page <em>{{ $meta->page->title }}</em></h1>
 
+    {!! $tabs !!}
+
     {!! Form::model($meta, ['route' => ['laravel-administrator-pages-meta-update', $meta->id]]) !!}
 
     <div class="panel  panel__full">

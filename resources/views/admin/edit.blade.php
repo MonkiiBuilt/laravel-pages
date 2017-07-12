@@ -15,6 +15,8 @@
 
     <h1>Edit page <em>{{ $page->title }}</em></h1>
 
+    {!! $tabs !!}
+
     <div class="row">
         <div class="col-md-6">
             {!! Form::model($page, ['route' => ['laravel-administrator-pages-put', 'id' => $page->id], 'class' => 'warn-on-change']) !!}

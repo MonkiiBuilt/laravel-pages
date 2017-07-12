@@ -18,7 +18,6 @@ class CreatePagesTable extends Migration
             $table->timestamps();
 
             $table->string('title', 255);
-            $table->string('slug', 255);
             $table->string('page_type', 255);
             $table->boolean('published')->default(0);
             $table->smallInteger('promoted')->default(0);

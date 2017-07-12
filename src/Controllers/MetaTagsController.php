@@ -18,15 +18,23 @@ class MetaTagsController extends Controller
     public function create(Request $request, $pageId)
     {
         $page = Page::findOrFail($pageId);
+        $tabs = $this->packageRegistry->getTabs('editPage', $pageId);
 
-        return view('pages::meta.create', ['page' => $page]);
+        return view('pages::meta.create', [
+            'page' => $page,
+            'tabs' => $tabs,
+        ]);
     }
 
     public function edit(Request $request, $id)
     {
         $meta = PageMetaTag::findOrFail($id);
+        $tabs = $this->packageRegistry->getTabs('editPage', $id);
 
-        return view('pages::meta.edit', ['meta' => $meta]);
+        return view('pages::meta.edit', [
+            'meta' => $meta,
+            'tabs' => $tabs,
+        ]);
     }
 
     public function store(Request $request, $pageId)

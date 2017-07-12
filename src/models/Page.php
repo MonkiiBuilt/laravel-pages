@@ -11,15 +11,12 @@ namespace MonkiiBuilt\LaravelPages\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use MonkiiBuilt\LaravelUrlAlias\Traits\UrlAlias;
-use Cviebrock\EloquentSluggable\Sluggable;
 
 class Page extends Eloquent {
 
     use SoftDeletes;
 
     use UrlAlias;
-
-    use Sluggable;
 
     protected $table = 'pages';
 
@@ -28,7 +25,6 @@ class Page extends Eloquent {
      */
     protected $fillable = [
         'title',
-        'slug',
         'published',
         'page_type',
         'promoted',
@@ -44,20 +40,6 @@ class Page extends Eloquent {
      * @var array
      */
     protected $dates = ['deleted_at', 'created_at', 'updated_at'];
-
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
 
     /**
      * @return mixed

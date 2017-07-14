@@ -92,6 +92,22 @@ class PagesAdminController extends Controller
             'updated_by' => \Auth::user()->id,
         ];
 
+        $rules = [
+            'title' => 'required',
+            'page_type' => 'required',
+        ];
+
+        $messages = [
+            'title.required' => 'Title field is required',
+            'page_type.required' => 'Please select a page type',
+        ];
+
+        // Make the validator
+        $validator = \Validator::make($request->all(), $rules, $messages);
+
+        // Validate the data
+        $validator->validate($request, $rules);
+
         $page = Page::create($data);
 
         // Create the content sections for the chosen page type
@@ -138,9 +154,9 @@ class PagesAdminController extends Controller
 
         $data = $request->input();
 
-        $rules = [];
+        $rules = ['title' => 'required'];
 
-        $messages = [];
+        $messages = ['title.required' => 'Title field is required'];
 
         foreach ($page->sections as $section) {
 

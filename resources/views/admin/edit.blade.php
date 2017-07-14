@@ -98,25 +98,8 @@
         $(document).ready(function() {
             $('.page-section-delete').click(function(e) {
 
-                var data = {
-                    "id": this.dataset.id,
-                    "_method": "DELETE",
-                    "_token": $("input[name=_token]").val()
-                };
+                var context = $(this).parent().remove();
 
-                var url = "{{ route('laravel-administrator-page-sections-delete') }}";
-
-                var context = $(this).parent();
-
-                $.ajax({
-                    type: "DELETE",
-                    url: url,
-                    data: data,
-                    context: context,
-                    success: function(data, status) {
-                        $(this).remove();
-                    }
-                });
             });
         });
     </script>

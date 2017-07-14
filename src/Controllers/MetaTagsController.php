@@ -15,6 +15,12 @@ use MonkiiBuilt\LaravelPages\Models\PageMetaTag;
 
 class MetaTagsController extends Controller
 {
+    // to use the package registry we first need to inject it into the controller
+    public function __construct(\MonkiiBuilt\LaravelAdministrator\PackageRegistry $packageRegistry)
+    {
+        $this->packageRegistry = $packageRegistry;
+    }
+
     public function create(Request $request, $pageId)
     {
         $page = Page::findOrFail($pageId);

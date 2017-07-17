@@ -129,37 +129,11 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-
             $(document).on('click', '.page-section-delete', function(e) {
                 e.preventDefault();
 
                 $(this).closest('.page-section').slideUp(400, function() { $(this).remove(); });
             });
-
-            // Old page section delete method, no longer used, commented out 
-            // until the new one is confirmed working.
-            // $('.page-section-delete').click(function(e) {
-
-            //     var data = {
-            //         "id": this.dataset.id,
-            //         "_method": "DELETE",
-            //         "_token": $("input[name=_token]").val()
-            //     };
-
-            //     var url = "{{ route('laravel-administrator-page-sections-delete') }}";
-
-            //     var context = $(this).parent();
-
-            //     $.ajax({
-            //         type: "DELETE",
-            //         url: url,
-            //         data: data,
-            //         context: context,
-            //         success: function(data, status) {
-            //             $(this).remove();
-            //         }
-            //     });
-            // });
         });
     </script>
 @endpush

@@ -12,12 +12,13 @@
 @section('title', 'Pages')
 
 @section('content')
-    <h1>Edit page <em>'{{ $page->title }}'</em></h1>
+
+    <h1>Edit page <em>{{ $page->title }}</em></h1>
 
     {!! $tabs !!}
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             {!! Form::model($page, ['route' => ['laravel-administrator-pages-put', 'id' => $page->id], 'class' => 'warn-on-change']) !!}
             {!! Form::hidden('type', $page->type) !!}
             {!! Form::hidden('_method', 'PUT') !!}
@@ -27,59 +28,23 @@
             <!-- Title -->
             <div class="form-group">
                 <fieldset class="{{ $errors->has('title') ? 'error' : '' }}">
-                    <label for="edit-page-title">Title</label>
+                    <label for="edit-page-title">Enter a title</label>
                     {!! Form::text('title', $page->title,  array('id' => 'edit-page-title', 'class' => 'form-control')) !!}
                     <div class="form__error">{{ $errors->first('title') }}</div>
                 </fieldset>
             </div>
 
-            <hr>
 
             <!-- Sections -->
-            <label>Sections</label>
-            <div class="page-sections  page-sections--sortable">
-                @foreach($page->sections as $section)
-                    @php
-                        // When we have the ability to know if a page section has errors in it this logic should be removed / refactored
-                        $sectionHasErrors = false;
+            @foreach($page->sections as $section)
+                <div class="page-section">
+                    <div class="page-section-delete" data-id="{{ $section->id }}">Delete</div>
+                    {!! $section->getDecorator()->renderForm() !!}
+                </div>
+                <hr>
+            @endforeach
 
-                        if($section->id == 1) {
-                            $sectionHasErrors = true;
-                        }
-                    @endphp
-                    <div class="panel panel-default  page-section  {{ $sectionHasErrors ? "panel-danger" : "" }}">
-                        <div id="page-section-{{ $section->id }}-heading" class="panel-heading  page-section__heading">
-                            <div class="panel-handle" title="Drag to reorder">
-                                <svg class="icon icon-bars"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bars"></use></svg>
-                            </div>
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" class="panel-title__link  {{ $sectionHasErrors ? "" : "collapsed" }}" href="#page-section-{{ $section->id }}-content">
-                                    <svg class="icon icon-caret-up"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-caret-up"></use></svg>
-                                    {{ $section->label }}
-                                </a>
-                            </h4>
-                            <div class="panel-options-container  btn-group">
-                                <a href="/" class="dropdown-toggle" data-toggle="dropdown" title="Options">
-                                    <svg class="icon icon-ellipsis-h"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-ellipsis-h"></use></svg>
-                                </a>
-                                <ul class="dropdown-menu  dropdown-menu-right">
-                                    <li><a href="/" class="page-section-delete">Delete</a></li>
-                                    <!-- We might want to list other options here eventually, e.g. duplicate, hide etc. -->
-                                </ul>
-                            </div>
-                        </div>
-                        <div id="page-section-{{ $section->id }}-content" class="panel-collapse collapse {{ $sectionHasErrors ? "in" : "" }}">
-                            <div class="panel-body  page-section__content">
-                                {!! $section->getDecorator()->renderForm() !!}
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
 
-            <hr>
-
-            <label>Settings</label>
             <!-- Published -->
             <fieldset class="{{ $errors->has('published') ? 'error' : '' }}">
                 <div class="checkbox">
@@ -105,14 +70,16 @@
             </fieldset>
 
             <fieldset class="{{ $errors->has('promoted_delta') ? 'error' : '' }}">
-                {!! Form::select('promoted_delta', [0,1,2], $page->promoted_delta, array('class' => 'form-select')) !!}
-                
-                Order of promoted page
+                <div class="checkbox">
+                    <label>
+                        {!! Form::select('promoted_delta', [0,1,2], $page->promoted_delta, array('class' => 'form-select')) !!}
+                        Order of promoted page
+                    </label>
+                </div>
 
                 <div class="form__error">{{ $errors->first('promoted_delta') }}</div>
             </fieldset>
 
-            <br>
 
             <!-- Submit -->
             <input name="submit" type="submit" value="Save" class="btn  btn-primary">
@@ -125,41 +92,16 @@
     <br>
 @endsection
 
+@section('scripts')
 
-@push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('.page-section-delete').click(function(e) {
 
-            $(document).on('click', '.page-section-delete', function(e) {
-                e.preventDefault();
+                var context = $(this).parent().remove();
 
-                $(this).closest('.page-section').slideUp(400, function() { $(this).remove(); });
             });
-
-            // Old page section delete method, no longer used, commented out 
-            // until the new one is confirmed working.
-            // $('.page-section-delete').click(function(e) {
-
-            //     var data = {
-            //         "id": this.dataset.id,
-            //         "_method": "DELETE",
-            //         "_token": $("input[name=_token]").val()
-            //     };
-
-            //     var url = "{{ route('laravel-administrator-page-sections-delete') }}";
-
-            //     var context = $(this).parent();
-
-            //     $.ajax({
-            //         type: "DELETE",
-            //         url: url,
-            //         data: data,
-            //         context: context,
-            //         success: function(data, status) {
-            //             $(this).remove();
-            //         }
-            //     });
-            // });
         });
     </script>
-@endpush
+
+@endsection

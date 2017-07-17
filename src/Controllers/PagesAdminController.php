@@ -93,6 +93,22 @@ class PagesAdminController extends Controller
             'updated_by' => \Auth::user()->id,
         ];
 
+        $rules = [
+            'title' => 'required',
+            'page_type' => 'required',
+        ];
+
+        $messages = [
+            'title.required' => 'Title field is required',
+            'page_type.required' => 'Please select a page type',
+        ];
+
+        // Make the validator
+        $validator = \Validator::make($request->all(), $rules, $messages);
+
+        // Validate the data
+        $validator->validate($request, $rules);
+
         $page = Page::create($data);
 
         // Create the content sections for the chosen page type
@@ -139,11 +155,21 @@ class PagesAdminController extends Controller
 
         $data = $request->input();
 
-        $rules = [];
+        $rules = ['title' => 'required'];
 
-        $messages = [];
+        $messages = ['title.required' => 'Title field is required'];
+
+        $sectionIds = array_keys($data['sections']);
 
         foreach ($page->sections as $section) {
+
+            /**
+             * If a section is missing from the data array then it's
+             * being removed on this edit so don't try validating it.
+             */
+            if (!in_array($section->id, $sectionIds)) {
+                continue;
+            }
 
             /**
              * Collect any validation rules page sections may have
@@ -176,13 +202,16 @@ class PagesAdminController extends Controller
         // Update the page itself
         $page->update($data);
 
-        // save each section
-        foreach ($page->sections as $delta => $section) {
-            $section->update([
-                'delta' => $delta,
-                'data' => $data['sections'][$section->id]['data'],
-            ]);
+        // sync the page sections
+        $delta = 0;
+        foreach ($data['sections'] as $id => $sectionData) {
+            $data['sections'][$id]['id'] = $id;
+            $data['sections'][$id]['delta'] = $delta;
+            $data['sections'][$id]['data'] = $sectionData['data'];
+            $delta++;
         }
+
+        $page->syncSections($data['sections']);
 
         return \Redirect::route('laravel-administrator-pages');
     }
@@ -199,15 +228,6 @@ class PagesAdminController extends Controller
         $page->delete();
 
         return \Redirect::route('laravel-administrator-pages');
-    }
-
-    public function pageSectionDelete(Request $request)
-    {
-        $section = PageSection::findOrFail($request->input('id'));
-
-        $section->delete();
-
-        return response()->json([1]);
     }
 
     /**

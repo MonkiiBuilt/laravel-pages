@@ -12,13 +12,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MonkiiBuilt\LaravelPages\Models\Page;
 use MonkiiBuilt\LaravelPages\Models\PageMetaTag;
-use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
 
 class MetaTagsController extends Controller
 {
-    private $packageRegistry;
-
-    public function __construct(PackageRegistry $packageRegistry)
+    // to use the package registry we first need to inject it into the controller
+    public function __construct(\MonkiiBuilt\LaravelAdministrator\PackageRegistry $packageRegistry)
     {
         $this->packageRegistry = $packageRegistry;
     }

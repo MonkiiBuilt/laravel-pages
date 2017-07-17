@@ -86,4 +86,34 @@ class Page extends Eloquent {
     {
         return $this->type->template;
     }
+
+    /**
+     * @param array $sections
+     */
+    public function syncSections(array $sections)
+    {
+        $children = $this->sections;
+        $sections = collect($sections);
+        $deleted_ids = $children->filter(
+            function ($child) use ($sections) {
+                return empty(
+                $sections->where('id', $child->id)->first()
+                );
+            }
+        )->map(function ($child) {
+            $id = $child->id;
+            $child->delete();
+            return $id;
+        }
+        );
+        $attachments = $sections->filter(
+            function ($sections) {
+                return empty($sections['id']);
+            }
+        )->map(function ($sections) use ($deleted_ids) {
+            $sections['id'] = $deleted_ids->pop();
+            return new InvoiceItem($sections);
+        });
+        $this->sections()->saveMany($attachments);
+    }
 }

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use MonkiiBuilt\LaravelPages\Models\PageSection;
 use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
 
+
 /**
  * Class PagesAdminController
  * @package MonkiiBuilt\LaravelPages\Controllers
@@ -216,8 +217,8 @@ class PagesAdminController extends Controller
      */
     public function view($id) {
         $page = Page::findOrFail($id);
-        $created_by = User::findOrFail($page->created_by);
-        $updated_by = User::findOrFail($page->updated_by);
+        $created_by = null;
+        $updated_by = null;
 
         return view('pages::page.view',
             [

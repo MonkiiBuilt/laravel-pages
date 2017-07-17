@@ -12,9 +12,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MonkiiBuilt\LaravelPages\Models\Page;
 use MonkiiBuilt\LaravelPages\Models\PageMetaTag;
+use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
 
 class MetaTagsController extends Controller
 {
+    private $packageRegistry;
+
+    public function __construct(PackageRegistry $packageRegistry)
+    {
+        $this->packageRegistry = $packageRegistry;
+    }
+
     public function create(Request $request, $pageId)
     {
         $page = Page::findOrFail($pageId);

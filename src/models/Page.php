@@ -9,14 +9,12 @@
 namespace MonkiiBuilt\LaravelPages\Models;
 
 use Eloquent;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
-use MonkiiBuilt\LaravelUrlAlias\Traits\UrlAlias;
 
 class Page extends Eloquent {
 
     use SoftDeletes;
-
-    use UrlAlias;
 
     protected $table = 'pages';
 

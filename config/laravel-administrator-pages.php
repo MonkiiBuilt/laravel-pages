@@ -6,6 +6,9 @@
  * @copyright 2008 - present, Monkii Digital Agency (http://monkii.com.au)
  */
 return [
+
+    'page-class' => \MonkiiBuilt\LaravelPages\Models\Page::class,
+
     'menu' => [
         'main' => [
             'laravel-administrator-pages' => [

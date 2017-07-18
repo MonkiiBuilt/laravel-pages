@@ -8,14 +8,10 @@
 
 namespace MonkiiBuilt\LaravelPages\Controllers;
 
-
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use MonkiiBuilt\LaravelPages\Models\Page;
 use Illuminate\Http\Request;
-use MonkiiBuilt\LaravelPages\Models\PageSection;
 use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
-
+use MonkiiBuilt\LaravelPages\Models\Page;
 
 /**
  * Class PagesAdminController
@@ -25,9 +21,13 @@ class PagesAdminController extends Controller
 {
     private $packageRegistry;
 
+    protected $pageClass;
+
     public function __construct(PackageRegistry $packageRegistry)
     {
         $this->packageRegistry = $packageRegistry;
+
+        $this->pageClass = config('laravel-administrator.page-class');
     }
 
     /**
@@ -109,7 +109,8 @@ class PagesAdminController extends Controller
         // Validate the data
         $validator->validate($request, $rules);
 
-        $page = Page::create($data);
+        $page = new $this->pageClass($data);
+        $page->save();
 
         // Create the content sections for the chosen page type
         $typesConfig= config('laravel-administrator.pageTypes');

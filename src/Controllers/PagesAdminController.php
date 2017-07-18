@@ -205,9 +205,11 @@ class PagesAdminController extends Controller
         // sync the page sections
         $delta = 0;
         foreach ($data['sections'] as $id => $sectionData) {
+            $existingSection = $page->sections()->find($id);
             $data['sections'][$id]['id'] = $id;
             $data['sections'][$id]['delta'] = $delta;
             $data['sections'][$id]['data'] = $sectionData['data'];
+            $data['sections'][$id]['type'] = $existingSection->type;
             $delta++;
         }
 

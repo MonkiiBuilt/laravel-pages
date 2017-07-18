@@ -94,26 +94,38 @@ class Page extends Eloquent {
     {
         $children = $this->sections;
         $sections = collect($sections);
+
+        /**
+         * delete any page sections that are not in the incoming
+         * sections array.
+         */
         $deleted_ids = $children->filter(
             function ($child) use ($sections) {
                 return empty(
-                $sections->where('id', $child->id)->first()
+                    $sections->where('id', $child->id)->first()
                 );
             }
         )->map(function ($child) {
             $id = $child->id;
             $child->delete();
             return $id;
-        }
-        );
-        $attachments = $sections->filter(
-            function ($sections) {
-                return empty($sections['id']);
-            }
-        )->map(function ($sections) use ($deleted_ids) {
-            $sections['id'] = $deleted_ids->pop();
-            return new InvoiceItem($sections);
         });
-        $this->sections()->saveMany($attachments);
+
+        /**
+         * Update existing sections with any new data
+         */
+        $attachments = $sections->filter(
+            function ($section) {
+                return !empty($section['id']);
+            }
+        )->map(function ($section) {
+
+            $model = \MonkiiBuilt\LaravelPages\Models\PageSection::find($section['id']);
+
+            return $model->update($section);
+        });
+
+        // TODO need to add logic to create any new sections that currently do not exist.
+
     }
 }

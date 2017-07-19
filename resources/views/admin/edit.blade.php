@@ -84,32 +84,12 @@
             <fieldset class="{{ $errors->has('published') ? 'error' : '' }}">
                 <div class="checkbox">
                     <label>
+                        {!! Form::hidden('published', 0) !!}
                         {!! Form::checkbox('published', 1, $page->published, array('class' => 'form-checkbox')) !!}
                         Published
                     </label>
                 </div>
                 <div class="form__error">{{ $errors->first('published') }}</div>
-            </fieldset>
-
-
-            <!-- Promote this page -->
-            <fieldset class="{{ $errors->has('promoted') ? 'error' : '' }}">
-                <div class="checkbox">
-                    <label>
-                        {!! Form::checkbox('promoted', 1, $page->promoted, array('class' => 'form-checkbox')) !!}
-                        Promote to home page
-                    </label>
-                </div>
-
-                <div class="form__error">{{ $errors->first('promoted') }}</div>
-            </fieldset>
-
-            <fieldset class="{{ $errors->has('promoted_delta') ? 'error' : '' }}">
-                {!! Form::select('promoted_delta', [0,1,2], $page->promoted_delta, array('class' => 'form-select')) !!}
-                
-                Order of promoted page
-
-                <div class="form__error">{{ $errors->first('promoted_delta') }}</div>
             </fieldset>
 
             <br>

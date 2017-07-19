@@ -197,6 +197,16 @@ class PagesAdminController extends Controller
         // Make the validator
         $validator = \Validator::make($request->all(), $rules, $messages);
 
+        // If any field in sections has an error we need to add a general section error as well
+        $validator->after(function ($validator) {
+            $failedRules = $validator->failed();
+            foreach ($failedRules as $sectionName => $failedRule) {
+                $pos = strpos($sectionName, 'data');
+                $name = substr( $sectionName, 0, $pos - 1);
+                $validator->errors()->add($name, 'This section has errors');
+            }
+        });
+
         // Validate the data
         $validator->validate($request, $rules);
 

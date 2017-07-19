@@ -47,13 +47,13 @@
                             $sectionHasErrors = true;
                         }
                     @endphp
-                    <div class="panel panel-default  page-section  {{ $sectionHasErrors ? "panel-danger" : "" }}">
+                    <div class="panel panel-default  page-section  {{ $errors->has('sections.' . $section->id) ? "panel-danger" : "" }}">
                         <div id="page-section-{{ $section->id }}-heading" class="panel-heading  page-section__heading">
                             <div class="panel-handle" title="Drag to reorder">
                                 <svg class="icon icon-bars"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bars"></use></svg>
                             </div>
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" class="panel-title__link  {{ $sectionHasErrors ? "" : "collapsed" }}" href="#page-section-{{ $section->id }}-content">
+                                <a data-toggle="collapse" class="panel-title__link  {{ $errors->has('sections.' . $section->id) ? "" : "collapsed" }}" href="#page-section-{{ $section->id }}-content">
                                     <svg class="icon icon-caret-up"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-caret-up"></use></svg>
                                     {{ $section->label }}
                                 </a>
@@ -68,7 +68,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div id="page-section-{{ $section->id }}-content" class="panel-collapse collapse {{ $sectionHasErrors ? "in" : "" }}">
+                        <div id="page-section-{{ $section->id }}-content" class="panel-collapse collapse {{ $errors->has('sections.' . $section->id) ? "in" : "" }}">
                             <div class="panel-body  page-section__content">
                                 {!! $section->getDecorator()->renderForm() !!}
                             </div>

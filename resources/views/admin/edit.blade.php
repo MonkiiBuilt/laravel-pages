@@ -39,14 +39,6 @@
             <label>Sections</label>
             <div class="page-sections  page-sections--sortable">
                 @foreach($page->sections as $section)
-                    @php
-                        // When we have the ability to know if a page section has errors in it this logic should be removed / refactored
-                        $sectionHasErrors = false;
-
-                        if($section->id == 1) {
-                            $sectionHasErrors = true;
-                        }
-                    @endphp
                     <div class="panel panel-default  page-section  {{ $errors->has('sections.' . $section->id) ? "panel-danger" : "" }}">
                         <div id="page-section-{{ $section->id }}-heading" class="panel-heading  page-section__heading">
                             <div class="panel-handle" title="Drag to reorder">

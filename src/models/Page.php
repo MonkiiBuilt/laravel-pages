@@ -112,7 +112,7 @@ class Page extends Eloquent {
         /**
          * Update existing sections with any new data
          */
-        $attachments = $sections->filter(
+        $updated = $sections->filter(
             function ($section) {
                 return !empty($section['id']);
             }
@@ -123,7 +123,16 @@ class Page extends Eloquent {
             return $model->update($section);
         });
 
-        // TODO need to add logic to create any new sections that currently do not exist.
+        // TODO Code below to create new items has not been tested yet.
+//        $created = $sections->filter(
+//            function($section) {
+//                return empty($section['id']);
+//            }
+//        )->map(function ($section) {
+//            $model = new \MonkiiBuilt\LaravelPages\Models\PageSection($section);
+//
+//            return $model->save();
+//        });
 
     }
 }

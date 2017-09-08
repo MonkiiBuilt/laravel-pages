@@ -1,15 +1,15 @@
 {
-  "name": "laravel-pages",
-  "version": "0.0.2",
+  "name": "monkiibuilt/laravel-pages",
   "require": {
     "php": ">=5.5.9",
     "laravel/framework": "5.4.*",
-    "MonkiiBuilt/laravel-url-alias": "0.0.5",
     "nanigans/single-table-inheritance": "0.7.*"
   },
   "autoload": {
-    "psr-4" : {
-      "MonkiiBuilt\\LaravelPages" : "src/"
+    "psr-4": {
+      "MonkiiBuilt\\LaravelPages\\": "src/"
     }
-  }
+  },
+  "description": "Create standard pages using sub page section packages.",
+  "license": "proprietary"
 }

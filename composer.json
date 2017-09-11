@@ -3,7 +3,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "~5.4",
-        "nanigans/single-table-inheritance": "0.7.*"
+        "tobiasdierich/single-table-inheritance": "0.7.*"
     },
     "autoload": {
         "psr-4": {
@@ -17,6 +17,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tobiasdierich/single-table-inheritance.git"
+        }
+    ],
     "description": "Create standard pages using sub page section packages.",
     "license": "proprietary"
 }

@@ -219,7 +219,8 @@ class PagesAdminController extends Controller
             $existingSection = $page->sections()->find($id);
             $data['sections'][$id]['id'] = $id;
             $data['sections'][$id]['delta'] = $delta;
-            $data['sections'][$id]['data'] = $sectionData['data'];
+//            $data['sections'][$id]['data'] = $sectionData['data'];
+            $data['sections'][$id]['data'] = (isset($sectionData['data'])) ? $sectionData['data'] : "";
             $data['sections'][$id]['type'] = $existingSection->type;
             $delta++;
         }

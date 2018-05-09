@@ -67,10 +67,17 @@ class PagesAdminController extends Controller
     {
         $page = Page::findOrFail($id);
         $tabs = $this->packageRegistry->getTabs('editPage', $id);
-
+        $availableSections = config('laravel-administrator.availablePageSections');
+        $options = [];
+        if ($availableSections) {
+            foreach($availableSections as $availableSection) {
+                $options[$availableSection['machine_name']] = $availableSection['label'];
+            }
+        }
         return view('pages::admin.edit', [
             'page' => $page,
             'tabs' => $tabs,
+            'availableSections' => $options,
         ]);
     }
 

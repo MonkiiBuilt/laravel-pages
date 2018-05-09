@@ -84,6 +84,17 @@
                 <div class="form__error">{{ $errors->first('published') }}</div>
             </fieldset>
 
+            <!-- Ordering -->
+            <fieldset class="{{ $errors->has('delta') ? 'error' : '' }}">
+                <div class="checkbox">
+                    <label>
+                        {!! Form::number('delta', $page->delta, array('class' => 'form-input')) !!}
+                        Ordering
+                    </label>
+                </div>
+                <div class="form__error">{{ $errors->first('delta') }}</div>
+            </fieldset>
+
             <br>
 
             <!-- Submit -->
@@ -94,7 +105,16 @@
         </div>
     </div>
 
-    <br>
+    @if(isset($availableSections) && !empty($availableSections))
+        <div class="row">
+            <select>
+                @foreach($availableSections as $machineName => $value)
+                    <option value="{{ $machineName }}">{{ $value }}</option>
+                @endforeach
+            </select>
+
+        </div>
+    @endif
 @endsection
 
 

@@ -127,11 +127,29 @@
             </div>
         </div>
     @endif
+
+    <div id="asset-picker-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="plan-info" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Asset picker</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- This iframe's src will be updated to point at the asset picker when the modal opens -->
+                    <iframe class="asset-picker-iframe"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
 @push('scripts')
     <script type="text/javascript">
+        window.assetModalURL = "<?= route("laravel-asset-manager-selector") ?>";
+
         $(document).ready(function() {
             $(document).on('click', '.page-section-delete', function(e) {
                 e.preventDefault();

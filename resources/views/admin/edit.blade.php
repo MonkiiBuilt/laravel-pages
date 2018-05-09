@@ -84,6 +84,17 @@
                 <div class="form__error">{{ $errors->first('published') }}</div>
             </fieldset>
 
+            <!-- Ordering -->
+            <fieldset class="{{ $errors->has('delta') ? 'error' : '' }}">
+                <div class="checkbox">
+                    <label>
+                        {!! Form::number('delta', $page->delta, array('class' => 'form-input')) !!}
+                        Ordering
+                    </label>
+                </div>
+                <div class="form__error">{{ $errors->first('delta') }}</div>
+            </fieldset>
+
             <br>
 
             <!-- Submit -->
@@ -94,7 +105,28 @@
         </div>
     </div>
 
-    <br>
+    @if(isset($availableSections) && !empty($availableSections))
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                {!! Form::open(['route' => 'laravel-administrator-page-sections-get']) !!}
+                    <h4>Add a content section</h4>
+                    <div class="select">
+                        <label>
+                            <select name="section" class="form-select">
+                                <option value="">Select type</option>
+                                @foreach($availableSections as $machineName => $value)
+                                    <option value="{{ $machineName }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </label>
+                    </div>
+                    {!! Form::hidden('pageId', $page->id) !!}
+                    <input name="submit" type="submit" value="Add section" class="btn  btn-primary">
+                {!! Form::close() !!}
+            </div>
+        </div>
+    @endif
 @endsection
 
 

@@ -244,6 +244,34 @@ class PagesAdminController extends Controller
         return \Redirect::route('laravel-administrator-pages');
     }
 
+    public function pageSection(Request $request)
+    {
+        $pageSectionName = $request->input('section');
+
+        $pageId =  $request->input('pageId');
+
+        $pageSections = config('laravel-administrator.availablePageSections');
+
+        $page = $page = Page::findOrFail($pageId);
+
+        if(!array_key_exists($pageSectionName, $pageSections)) {
+            abort(404);
+        }
+
+        $section = new $pageSections[$pageSectionName]['class'](
+            [
+                'delta' => 0,
+                'machine_name'  => $pageSections[$pageSectionName]['machine_name'],
+                'label' => $pageSections[$pageSectionName]['label'],
+                'type' => $pageSections[$pageSectionName]['type'],
+            ]
+        );
+
+        $page->sections()->save($section);
+
+        return $section->getDecorator()->renderForm();
+    }
+
     /**
      * @param $id
      *

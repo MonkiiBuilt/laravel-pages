@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'MonkiiBuilt\LaravelPages', 'm
 
     Route::delete('/pages/{id}/meta-delete', ['as' => 'laravel-administrator-pages-meta-delete', 'uses' => 'Controllers\MetaTagsController@delete']);
 
+    Route::post('/page-section', ['as' => 'laravel-administrator-page-sections-get', 'uses' => 'Controllers\PagesAdminController@pageSection']);
 });
 
 Route::get('/pages/{id}', ['as' => 'laravel-pages-view', 'uses' => 'MonkiiBuilt\LaravelPages\Controllers\PagesAdminController@view']);

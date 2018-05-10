@@ -23,6 +23,20 @@ return [
     ],
 
     /**
+     * Define available page sections here, allows users to add a content section
+     * to an existing page in addition to any predefined sections for that page type.
+     *
+     * eg:
+         'body' => [
+            'machine_name' => 'body',
+            'label' => 'Body',
+            'type' => 'plain_text',
+            'class' => 'MonkiiBuilt\LaravelPageSectionsText\Models\PageSectionText',
+        ],
+     */
+    'availablePageSections' => [],
+
+    /**
      * Define your page types here.
      *
      */

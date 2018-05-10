@@ -10,6 +10,7 @@ namespace MonkiiBuilt\LaravelPages\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use MonkiiBuilt\LaravelAdministrator\PackageRegistry;
 use MonkiiBuilt\LaravelPages\Models\Page;
 
@@ -222,19 +223,20 @@ class PagesAdminController extends Controller
 
         // sync the page sections
         $delta = 0;
-        foreach ($data['sections'] as $id => $sectionData) {
-            $existingSection = $page->sections()->find($id);
-            $data['sections'][$id]['id'] = $id;
-            $data['sections'][$id]['delta'] = $delta;
-//            $data['sections'][$id]['data'] = $sectionData['data'];
-            $data['sections'][$id]['data'] = (isset($sectionData['data'])) ? $sectionData['data'] : "";
-            $data['sections'][$id]['type'] = $existingSection->type;
+        foreach ($data['sections'] as $sid => $sectionData) {
+            $existingSection = $page->sections()->find($sid);
+            $data['sections'][$sid]['id'] = $sid;
+            $data['sections'][$sid]['delta'] = $delta;
+            $data['sections'][$sid]['data'] = (isset($sectionData['data'])) ? $sectionData['data'] : "";
+            $data['sections'][$sid]['type'] = $existingSection->type;
             $delta++;
         }
 
         $page->syncSections($data['sections']);
 
-        return \Redirect::route('laravel-administrator-pages');
+        $stay = Input::get('stay');
+        if (isset($stay)) return \Redirect::route('laravel-administrator-pages-edit', ['id' => $id]);
+        else return \Redirect::route('laravel-administrator-pages');
     }
 
     /**
@@ -261,13 +263,14 @@ class PagesAdminController extends Controller
 
         $page = $page = Page::findOrFail($pageId);
 
-        if(!array_key_exists($pageSectionName, $pageSections)) {
+        if (!array_key_exists($pageSectionName, $pageSections)) {
             abort(404);
         }
 
+        $count   = count($pageSections);
         $section = new $pageSections[$pageSectionName]['class'](
             [
-                'delta' => 0,
+                'delta' => $count,
                 'machine_name'  => $pageSections[$pageSectionName]['machine_name'],
                 'label' => $pageSections[$pageSectionName]['label'],
                 'type' => $pageSections[$pageSectionName]['type'],
@@ -276,7 +279,7 @@ class PagesAdminController extends Controller
 
         $page->sections()->save($section);
 
-        return $section->getDecorator()->renderForm();
+        return view('pages::admin.partials.form_section', ['section' => $section]);
     }
 
     /**
